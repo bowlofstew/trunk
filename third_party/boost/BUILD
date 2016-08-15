@@ -2,332 +2,528 @@ licenses(["notice"])
 
 boost_path = "upstream"
 
-load("/tools/build_rules/boost", "boost_library")
+load("/tools/boost", "boost_library")
 
-boost_library(
-  name = "algorithm",
+#boost_library(
+#  name = "program_options",
+#  deps = [
+#    ":throw_exception",
+#    ":bind",
+#    ":detail",
+#    ":config",
+#    ":type_traits",
+#    ":iterator",
+#  ]
+#)
+
+cc_library(
+  name = "program_options",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/program_options/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/program_options/include/boost/**/*.hpp",
+  ]),
+  srcs = glob([
+    boost_path + "/program_options/src/*.cpp",
+  ]),
   deps = [
+    ":any",
+    ":throw_exception",
+    ":bind",
+    ":detail",
+    ":config",
+    ":type_traits",
+    ":iterator",
     ":function",
-    ":range",
+    ":lexical_cast",
+    ":smart_ptr",
+    ":tokenizer",
   ]
 )
 
-boost_library(
-  name = "align",
-)
-
-boost_library(
-  name = "assert",
-)
-
-boost_library(
-  name = "atomic",
-)
-
-boost_library(
-  name = "bind",
-)
-
-boost_library(
-  name = "chrono",
-  deps = [
-    ":ratio"
+cc_library(
+  name = "tokenizer",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/tokenizer/include/",
   ],
-)
-
-boost_library(
-  name = "concept_check",
-)
-
-boost_library(
-  name = "config",
-)
-
-boost_library(
-  name = "container",
-)
-
-CONTEXT_K8_LINUX_ASM = [
-  boost_path + "/context/src/asm/jump_x86_64_sysv_elf_gas.S",
-  boost_path + "/context/src/asm/make_x86_64_sysv_elf_gas.S",
-]
-
-boost_library(
-  name = "context",
-  srcs = [
-    boost_path + "/context/src/execution_context.cpp",
-  ] + CONTEXT_K8_LINUX_ASM,
-  deps = [
-    ":config"
-  ],
-  copts = [
-    "-fsplit-stack",
-    "-DBOOST_USE_SEGMENTED_STACKS",
-  ],
-)
-
-boost_library(
-  name = "conversion",
-)
-
-boost_library(
-  name = "core",
-)
-
-boost_library(
-  name = "date_time",
-)
-
-boost_library(
-  name = "detail",
-)
-
-boost_library(
-  name = "exception",
-  defines = [
-    "BOOST_NO_CXX11_RVALUE_REFERENCES",
-  ],
-)
-
-boost_library(
-  name = "filesystem",
-  srcs = glob([
-    boost_path + "/filesystem/src/*.cpp",
+  hdrs = glob([
+    boost_path + "/tokenizer/include/boost/**/*.hpp",
   ]),
+  srcs = [
+  ],
+  deps = [
+    ":iterator",
+    ":assert",
+    ":utility",
+  ]
+)
+
+cc_library(
+  name = "any",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/any/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/any/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":throw_exception",
+    ":detail",
+    ":config",
+    ":type_traits",
+    ":utility",
+    ":mpl",
+    ":static_assert",
+    ":type_index",
+  ]
+)
+
+cc_library(
+  name = "type_index",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/type_index/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/type_index/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
   deps = [
     ":config",
-    ":functional",
-    ":io",
-    ":iterator",
-    ":range",
-    ":smart_ptr",
-    ":system",
-    ":type_traits",
   ],
 )
 
-boost_library(
-  name = "foreach",
-)
-
-boost_library(
-  name = "function",
+cc_library(
+  name = "utility",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/utility/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/utility/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
   deps = [
-    ":bind",
+    ":core",
+    ":config",
+  ]
+)
+
+cc_library(
+  name = "throw_exception",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/throw_exception/include/",
   ],
-)
-
-boost_library(
-  name = "function_types",
-)
-
-boost_library(
-  name = "functional",
-  deps = [
-    ":detail",
+  hdrs = glob([
+    boost_path + "/throw_exception/include/boost/**/*.hpp",
+  ]),
+  srcs = [
   ],
-)
-
-boost_library(
-  name = "heap",
-  deps = [
-    ":parameter",
-  ],
-)
-
-boost_library(
-  name = "integer",
-  deps = [
-    ":static_assert"
-  ],
-)
-
-boost_library(
-  name = "iterator",
-  deps = [
-    ":detail",
-    ":static_assert",
-  ],
-)
-
-boost_library(
-  name = "intrusive",
   deps = [
     ":assert",
-    ":static_assert"
   ],
 )
 
-boost_library(
-  name = "io",
+cc_library(
+  name = "bind",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/bind/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/bind/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
 )
 
-boost_library(
-  name = "math",
+
+cc_library(
+  name = "detail",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/detail/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/detail/include/boost/**/*pp",
+  ]),
+  srcs = [
+  ],
 )
 
-boost_library(
-  name = "move",
+cc_library(
+  name = "config",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/config/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/config/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
 )
 
-boost_library(
+cc_library(
+  name = "type_traits",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/type_traits/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/type_traits/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "core",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/core/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/core/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
   name = "mpl",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/mpl/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/mpl/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
   deps = [
     ":preprocessor",
     ":move",
-  ]
-)
-
-boost_library(
-  name = "multi_index",
-  deps = [
-    ":foreach",
-    ":serialization",
-    ":static_assert",
-    ":tuple",
   ],
 )
 
-boost_library(
-  name = "optional",
-)
-
-boost_library(
-  name = "parameter",
-)
-
-boost_library(
-  name = "predef",
-)
-
-boost_library(
+cc_library(
   name = "preprocessor",
-)
-
-boost_library(
-  name = "range",
-  deps = [
-    ":concept_check",
-    ":optional",
-  ]
-)
-
-boost_library(
-  name = "ratio",
-)
-
-boost_library(
-  name = "regex",
-  defines = [
-    "BOOST_FALLTHROUGH"
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/preprocessor/include/",
   ],
-  srcs = glob([
-    boost_path + "/regex/src/*.cpp",
-    boost_path + "/regex/src/*.hpp",
+  hdrs = glob([
+    boost_path + "/preprocessor/include/boost/**/*.hpp",
   ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "move",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/move/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/move/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "static_assert",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/static_assert/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/static_assert/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "iterator",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/iterator/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/iterator/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
   deps = [
-    ":assert",
+    ":detail",
+    ":static_assert",
+  ],
+)
+
+cc_library(
+  name = "assert",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/assert/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/assert/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
     ":config",
-    ":functional",
+  ],
+)
+
+cc_library(
+  name = "function",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/function/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/function/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":detail",
+    ":preprocessor",
     ":integer",
-    ":mpl",
-    ":smart_ptr",
-    ":throw_exception",
-    ":type_traits",
+  ],
+)
+
+cc_library(
+  name = "integer",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/integer/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/integer/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "lexical_cast",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/lexical_cast/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/lexical_cast/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":config",
+    ":range",
+    ":numeric_conversion",
+    ":array",
+    ":container",
+    ":math",
   ]
 )
 
-boost_library(
-  name = "serialization",
+cc_library(
+  name = "range",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/range/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/range/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    "concept_check",
+  ]
 )
 
-boost_library(
-  name = "smart_ptr",
+cc_library(
+  name = "concept_check",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/concept_check/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/concept_check/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
   deps = [
-    ":align",
-    ":core",
-    ":predef",
+    ":iterator",
+    ":type_traits",
+    ":utility",
+    ":mpl",
+    ":detail",
+  ]
+)
+
+cc_library(
+  name = "numeric_conversion",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/numeric_conversion/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/numeric_conversion/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":conversion",
+  ]
+)
+
+cc_library(
+  name = "conversion",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/conversion/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/conversion/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":config",
+    ":assert",
     ":throw_exception",
     ":utility",
+    ":typeof",
+  ]
+)
+
+cc_library(
+  name = "typeof",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/typeof/include/",
   ],
-)
-
-boost_library(
-  name = "static_assert",
-)
-
-boost_library(
-  name = "system",
-  srcs = glob([
-    boost_path + "/system/src/*.cpp",
+  hdrs = glob([
+    boost_path + "/typeof/include/boost/**/*.hpp",
   ]),
-  deps = [
-    ":assert",
-    ":config",
-    ":core",
-    ":predef",
-  ],
-)
-
-boost_library(
-  name = "thread",
-  defines = [
-    "BOOST_NO_CXX11_RVALUE_REFERENCES",
-    "BOOST_NO_CXX11_SMART_PTR",
+  srcs = [
   ],
   deps = [
-    ":atomic",
-    ":chrono",
-    ":core",
-    ":date_time",
-    ":exception",
-    ":io",
-    ":system",
-  ]
-)
-
-boost_library(
-  name = "throw_exception",
-)
-
-boost_library(
-  name = "type_index",
-  deps = [
-    ":core",
-  ]
-)
-
-boost_library(
-  name = "type_traits",
-  deps = [
-    ":core",
+    ":preprocessor",
     ":mpl",
-    ":static_assert",
   ]
 )
 
-boost_library(
-  name = "tuple",
+cc_library(
+  name = "array",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/array/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/array/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":detail",
+    ":assert",
+    ":static_assert",
+    ":throw_exception",
+    ":config",
+    ":core",
+    ":functional",
+  ]
 )
 
-boost_library(
-  name = "tr1",
-  defines = [
-    "BOOST_FALLTHROUGH"
+cc_library(
+  name = "functional",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/functional/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/functional/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":config",
+    ":utility",
+  ]
+)
+
+cc_library(
+  name = "container",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/container/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/container/include/boost/**/*.hpp",
+  ]),
+  srcs = [
   ],
   deps = [
     ":config",
   ]
 )
 
-boost_library(
-  name = "utility",
+cc_library(
+  name = "math",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/math/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/math/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":config",
+    ":predef",
+  ]
 )
 
-boost_library(
-  name = "variant",
-  deps = [
-    ":math",
-    ":type_index",
-  ]
+cc_library(
+  name = "predef",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/predef/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/predef/include/boost/**/*.h",
+    boost_path + "/predef/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
+)
+
+cc_library(
+  name = "smart_ptr",
+  visibility = ["//visibility:public"],
+  includes = [
+    boost_path + "/smart_ptr/include/",
+  ],
+  hdrs = glob([
+    boost_path + "/smart_ptr/include/boost/**/*.hpp",
+  ]),
+  srcs = [
+  ],
 )
